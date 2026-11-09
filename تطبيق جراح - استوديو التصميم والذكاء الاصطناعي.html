@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق جراح | استوديو التصميم والذكاء الاصطناعي</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Arabic Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&family=Reem+Kufi:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .font-amiri { font-family: 'Amiri', serif; }
+        .font-cairo { font-family: 'Cairo', sans-serif; }
+        .font-reem { font-family: 'Reem Kufi', sans-serif; }
+        .font-tajawal { font-family: 'Tajawal', sans-serif; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0284c7 0%, #4f46e5 50%, #9333ea 100%);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-sky-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none bg-slate-800 border border-sky-500/50 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 space-x-reverse">
+        <i class="fa-solid fa-circle-check text-sky-400 text-xl"></i>
+        <span id="toast-message">تمت العملية بنجاح!</span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center shadow-lg shadow-sky-500/20 text-white font-bold text-2xl">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-tight gradient-text">تطبيق جراح</span>
+                    <span class="block text-xs text-slate-400 font-medium">JARRAH APP</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-8 space-x-reverse text-sm font-semibold text-slate-300">
+                <a href="#hero" class="hover:text-sky-400 transition">الرئيسية</a>
+                <a href="#features" class="hover:text-sky-400 transition">المميزات</a>
+                <a href="#demo" class="hover:text-sky-400 transition">استوديو التصميم (Demo)</a>
+                <a href="#ai-tools" class="hover:text-sky-400 transition">الذكاء الاصطناعي</a>
+            </nav>
+
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <a href="#demo" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-sky-500/30 text-sky-400 hover:bg-sky-500/10 transition font-semibold text-sm">
+                    تجربة مجانية
+                </a>
+                <button onclick="showDownloadModal()" class="gradient-bg text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-sky-500/25 hover:opacity-95 transition text-sm flex items-center space-x-2 space-x-reverse">
+                    <i class="fa-solid fa-download"></i>
+                    <span>تحميل التطبيق</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative overflow-hidden pt-20 pb-28">
+        <!-- Glow background shapes -->
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-sky-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 left-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 text-center lg:text-right">
+                    <div class="inline-flex items-center space-x-2 space-x-reverse bg-slate-800/80 border border-slate-700/80 px-4 py-2 rounded-full text-xs font-semibold text-sky-400 mb-6 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                        <span>الإصدار الجديد كلياً 3.0 مع تقنيات الذكاء الاصطناعي</span>
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight mb-6">
+                        أطلق العنان لإبداعك مع <span class="gradient-text">تطبيق جراح</span> للتصميم والكتابة
+                    </h1>
+                    <p class="text-slate-300 text-lg sm:text-xl font-normal leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0">
+                        التطبيق العربي الأمثل لتصميم الصور وتعديل الفيديوهات باحترافية، مع مئات الخطوط العربية والإنجليزية المميزة، وأدوات ذكاء اصطناعي تترجم خيالك إلى حقيقة بلمسة واحدة.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#demo" class="w-full sm:w-auto gradient-bg text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-sky-500/25 hover:opacity-95 transition text-center flex items-center justify-center space-x-3 space-x-reverse">
+                            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                            <span>جرب استوديو التصميم الآن</span>
+                        </a>
+                        <a href="#features" class="w-full sm:w-auto bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 px-8 py-4 rounded-2xl font-bold transition text-center flex items-center justify-center space-x-2 space-x-reverse">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>استكشف المميزات</span>
+                        </a>
+                    </div>
+
+                    <!-- Store Badges Mock -->
+                    <div class="mt-12 flex items-center justify-center lg:justify-start space-x-6 space-x-reverse text-slate-400 text-sm">
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            <span class="text-white font-bold">4.9 / 5</span>
+                            <span>(أكثر من 50 ألف تقييم)</span>
+                        </div>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <i class="fa-solid fa-users text-sky-400"></i>
+                            <span class="text-white font-bold">+1 مليون</span>
+                            <span>مستخدم نشط</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Visual Graphic -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute -inset-1.5 gradient-bg rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                        <div class="relative glass-card p-6 rounded-3xl shadow-2xl border border-slate-700/60">
+                            <!-- Mock UI Inside Phone frame -->
+                            <div class="bg-slate-950 rounded-2xl p-4 border border-slate-800">
+                                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                                    <div class="flex items-center space-x-2 space-x-reverse">
+                                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                    </div>
+                                    <span class="text-xs text-slate-400 font-mono">Jarrah Studio Pro</span>
+                                </div>
+                                <div class="relative rounded-xl overflow-hidden bg-gradient-to-br from-indigo-950 to-slate-900 p-8 text-center aspect-square flex flex-col items-center justify-center border border-slate-800">
+                                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                                    <h3 class="font-amiri text-3xl md:text-4xl text-sky-300 mb-3 drop-shadow-lg">رمضان كريم</h3>
+                                    <p class="font-tajawal text-slate-300 text-sm">تصميم عصري بخطوط جراح المميزة</p>
+                                    <div class="mt-6 inline-flex items-center space-x-2 space-x-reverse bg-sky-500/20 border border-sky-500/30 px-3 py-1.5 rounded-full text-xs text-sky-300">
+                                        <i class="fa-solid fa-sparkles"></i>
+                                        <span>مدعوم بالذكاء الاصطناعي</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 grid grid-cols-4 gap-2">
+                                    <div class="bg-slate-900 p-2 rounded-xl text-center text-xs text-slate-300 border border-slate-800">
+                                        <i class="fa-solid fa-font block mb-1 text-sky-400"></i> الخطوط
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded-xl text-center text-xs text-slate-300 border border-slate-800">
+                                        <i class="fa-solid fa-palette block mb-1 text-purple-400"></i> الألوان
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded-xl text-center text-xs text-slate-300 border border-slate-800">
+                                        <i class="fa-solid fa-wand-magic block mb-1 text-pink-400"></i> تأثيرات
+                                    </div>
+                                    <div class="bg-slate-900 p-2 rounded-xl text-center text-xs text-slate-300 border border-slate-800">
+                                        <i class="fa-solid fa-video block mb-1 text-emerald-400"></i> فيديو
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-slate-950/50 border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-black mb-4">أقوى المميزات في تطبيق <span class="gradient-text">جراح</span></h2>
+                <p class="text-slate-400 text-base sm:text-lg">كل ما تحتاجه لإنتاج تصاميم مبهرة ومحتوى مرئي احترافي بين يديك.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-3xl hover:border-sky-500/50 transition duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">الكتابة والتصميم</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        يضم مئات الخطوط العربية والأجنبية النادرة مع إمكانية تنسيق النصوص، التحكم بالألوان، والظلال والانحناءات بدقة فائقة.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-3xl hover:border-indigo-500/50 transition duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">قوالب جاهزة</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        مكتبة واسعة ومتجددة من القوالب لبطاقات الدعوة، الشعارات (اللوجو)، ومنشورات وقصص منصات التواصل الاجتماعي.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-3xl hover:border-purple-500/50 transition duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">تحرير الفيديو</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        أدوات مونتاج متكاملة تدعم دمج مقاطع الفيديو، القص، إضافة النصوص المتحركة، المؤثرات الصوتية والبصرية الاحترافية.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 rounded-3xl hover:border-pink-500/50 transition duration-300 group">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 text-2xl mb-6 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">الذكاء الاصطناعي</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        أدوات توليد الصور من النصوص، إزالة الخلفيات بذكاء، وتحسين جودة التصميم بلمسة واحدة لإنتاج محتوى فريد.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section (استوديو جراح التفاعلي) -->
+    <section id="demo" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-sky-400 font-semibold text-sm tracking-wider uppercase bg-sky-500/10 px-4 py-1.5 rounded-full border border-sky-500/20">محاكاة حية</span>
+                <h2 class="text-3xl sm:text-5xl font-black mt-4 mb-4">جرب <span class="gradient-text">استوديو جراح</span> تفاعلياً</h2>
+                <p class="text-slate-400 text-base sm:text-lg">اختر الخطوط، نسق النصوص، وجرب أدوات الذكاء الاصطناعي مباشرة من متصفحك.</p>
+            </div>
+
+            <!-- Studio Workspace -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-700/80 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Controls Sidebar (Right/Left in RTL) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Tabs -->
+                    <div class="grid grid-cols-3 gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
+                        <button onclick="switchTab('text')" id="tab-btn-text" class="py-2.5 px-3 rounded-xl font-semibold text-sm transition bg-sky-600 text-white shadow-md">
+                            <i class="fa-solid fa-font ml-1"></i> النصوص
+                        </button>
+                        <button onclick="switchTab('templates')" id="tab-btn-templates" class="py-2.5 px-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-layer-group ml-1"></i> القوالب
+                        </button>
+                        <button onclick="switchTab('ai')" id="tab-btn-ai" class="py-2.5 px-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-wand-magic-sparkles ml-1"></i> الذكاء الاصطناعي
+                        </button>
+                    </div>
+
+                    <!-- Tab Content: Text Editor -->
+                    <div id="tab-content-text" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">النص المكتوب</label>
+                            <input type="text" id="canvas-text-input" value="تطبيق جراح للإبداع" oninput="updateCanvasText()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">نوع الخط</label>
+                            <select id="font-family-select" onchange="updateFontFamily()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition">
+                                <option value="font-cairo">خط كايرو (Cairo)</option>
+                                <option value="font-amiri">خط أميري الكلاسيكي (Amiri)</option>
+                                <option value="font-reem">خط ريم كوفي (Reem Kufi)</option>
+                                <option value="font-tajawal">خط تجوال (Tajawal)</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-2">لون النص</label>
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <input type="color" id="text-color-picker" value="#38bdf8" onchange="updateTextColor()" class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer p-1">
+                                    <span class="text-xs text-slate-400 font-mono" id="color-hex-label">#38bdf8</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-300 mb-2">حجم الخط (<span id="font-size-val">36</span>px)</label>
+                                <input type="range" id="font-size-range" min="20" max="64" value="36" oninput="updateFontSize()" class="w-full accent-sky-500 bg-slate-900 mt-3">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">نمط الخلفية</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setBgTheme('from-slate-900 to-indigo-950')" class="p-2 rounded-xl border border-slate-700 bg-indigo-950 text-xs text-white hover:border-sky-500">ليلي عميق</button>
+                                <button onclick="setBgTheme('from-purple-950 to-pink-950')" class="p-2 rounded-xl border border-slate-700 bg-purple-950 text-xs text-white hover:border-sky-500">غروب فوشيا</button>
+                                <button onclick="setBgTheme('from-emerald-950 to-teal-950')" class="p-2 rounded-xl border border-slate-700 bg-emerald-950 text-xs text-white hover:border-sky-500">طبيعة خضراء</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Templates -->
+                    <div id="tab-content-templates" class="space-y-4 hidden">
+                        <label class="block text-sm font-semibold text-slate-300">اختر قالباً جاهزاً للتعديل</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div onclick="applyTemplate('دعوة زفاف مباركة', 'font-amiri', '#fbbf24', 'from-amber-950 to-stone-900')" class="p-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 cursor-pointer transition text-center">
+                                <i class="fa-solid fa-ring text-amber-400 text-xl mb-2"></i>
+                                <span class="block text-xs font-bold text-white">دعوة زفاف</span>
+                            </div>
+                            <div onclick="applyTemplate('عرض خاص - خصم 50%', 'font-cairo', '#ef4444', 'from-red-950 to-slate-950')" class="p-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-red-500 cursor-pointer transition text-center">
+                                <i class="fa-solid fa-tag text-red-400 text-xl mb-2"></i>
+                                <span class="block text-xs font-bold text-white">إعلان تسويقي</span>
+                            </div>
+                            <div onclick="applyTemplate('رمضان مبارك عليكم', 'font-amiri', '#38bdf8', 'from-sky-950 to-slate-900')" class="p-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-sky-400 cursor-pointer transition text-center">
+                                <i class="fa-solid fa-moon text-sky-400 text-xl mb-2"></i>
+                                <span class="block text-xs font-bold text-white">تهنئة مناسبات</span>
+                            </div>
+                            <div onclick="applyTemplate('صباح الخير والياسمين', 'font-reem', '#ec4899', 'from-pink-950 to-slate-900')" class="p-4 rounded-xl bg-slate-900 border border-slate-700 hover:border-pink-400 cursor-pointer transition text-center">
+                                <i class="fa-solid fa-sun text-pink-400 text-xl mb-2"></i>
+                                <span class="block text-xs font-bold text-white">صباحيات</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: AI Generator -->
+                    <div id="tab-content-ai" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">وصف الصورة المطلوبة (AI Prompt)</label>
+                            <textarea id="ai-prompt-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-sky-500 transition" placeholder="مثال: مسجد معماري إسلامي يضيء وقت الشفق بتفاصيل ذهبية دقيقة...">تصميم فني حديث لإطلالة عربية إبداعية بلمسات سحرية مستقبلية</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-300 mb-2">أسلوب التصميم</label>
+                            <select id="ai-style-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition">
+                                <option value="digital">فنون رقمية (Digital Art)</option>
+                                <option value="cinematic">سينمائي واقعي (Cinematic)</option>
+                                <option value="3d">ثلاثي الأبعاد (3D Render)</option>
+                                <option value="calligraphy">خط عربي حديث (Modern Calligraphy)</option>
+                            </select>
+                        </div>
+                        <button onclick="generateAIImage()" class="w-full gradient-bg text-white py-3.5 rounded-xl font-bold shadow-lg shadow-sky-500/20 hover:opacity-95 transition flex items-center justify-center space-x-2 space-x-reverse">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>توليد بالذكاء الاصطناعي</span>
+                        </button>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="pt-4 border-t border-slate-800 flex space-x-3 space-x-reverse">
+                        <button onclick="saveDesign()" class="flex-1 bg-sky-600 hover:bg-sky-500 text-white py-3 rounded-xl font-bold transition text-sm flex items-center justify-center space-x-2 space-x-reverse">
+                            <i class="fa-solid fa-download"></i>
+                            <span>حفظ التصميم</span>
+                        </button>
+                        <button onclick="resetDesign()" class="px-5 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold transition text-sm">
+                            إعادة ضبط
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Preview Area -->
+                <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-950 p-6 rounded-3xl border border-slate-800 relative overflow-hidden min-h-[400px]">
+                    <div class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur border border-slate-800 px-3 py-1.5 rounded-lg text-xs text-slate-400 font-mono flex items-center space-x-2 space-x-reverse">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span>معاينة حية</span>
+                    </div>
+
+                    <!-- Canvas Box -->
+                    <div id="canvas-box" class="w-full max-w-lg aspect-[4/3] rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 p-8 flex flex-col items-center justify-center text-center relative shadow-2xl transition-all duration-500 border border-slate-800">
+                        <!-- AI Loading Overlay -->
+                        <div id="ai-loading" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center hidden z-20">
+                            <div class="w-12 h-12 rounded-full border-4 border-sky-500 border-t-transparent animate-spin mb-4"></div>
+                            <p class="text-sky-300 font-bold text-sm">جاري معالجة وتوليد التصميم بالذكاء الاصطناعي...</p>
+                        </div>
+
+                        <!-- Image/Graphic Preview Background -->
+                        <div id="canvas-bg-badge" class="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+                        <!-- Rendered Text Output -->
+                        <div class="relative z-10 p-6 rounded-xl transition-all duration-300">
+                            <h2 id="preview-text-output" class="font-cairo text-4xl sm:text-5xl font-bold leading-normal tracking-wide drop-shadow-2xl" style="color: #38bdf8;">
+                                تطبيق جراح للإبداع
+                            </h2>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-3">
+                            <span>Jarrah App Canvas</span>
+                            <span id="canvas-dimensions">1080 x 810 px</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Editing & AI Showcase Section -->
+    <section class="py-24 bg-slate-950/70 border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-sky-400 font-semibold text-sm tracking-wider uppercase bg-sky-500/10 px-4 py-1.5 rounded-full border border-sky-500/20">مونتاج وفيديو</span>
+                    <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-6">تحرير فيديو احترافي بلمسات سريعة</h2>
+                    <p class="text-slate-300 text-base leading-relaxed mb-6">
+                        لا حاجة لبرامج معقدة بعد اليوم. يوفر تطبيق جراح خط زمن (Timeline) مرن لقص الفيديوهات، دمج المقاطع، إضافة الانتقالات السلسلة، وإدراج نصوص متحركة بالخطوط العربية مع مزامنة موسيقية رائعة.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center space-x-3 space-x-reverse text-slate-300 text-sm">
+                            <i class="fa-solid fa-check-circle text-sky-400 text-lg"></i>
+                            <span>دعم تصدير بجودة 4K فائقة الوضوح وبدون علامة مائية.</span>
+                        </li>
+                        <li class="flex items-center space-x-3 space-x-reverse text-slate-300 text-sm">
+                            <i class="fa-solid fa-check-circle text-sky-400 text-lg"></i>
+                            <span>فلاتر لونية وتأثيرات بصرية جاهزة تناسب كافة المناسبات.</span>
+                        </li>
+                        <li class="flex items-center space-x-3 space-x-reverse text-slate-300 text-sm">
+                            <i class="fa-solid fa-check-circle text-sky-400 text-lg"></i>
+                            <span>مكتبة ضخمة من المؤثرات الصوتية والموسيقى الترند.</span>
+                        </li>
+                    </ul>
+                    <button onclick="showDownloadModal()" class="gradient-bg text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-sky-500/20 hover:opacity-95 transition text-sm">
+                        ابدأ بتعديل فيديوهاتك الآن
+                    </button>
+                </div>
+
+                <!-- Video Mock UI -->
+                <div class="glass-card p-6 rounded-3xl border border-slate-700/80 shadow-2xl">
+                    <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs text-slate-400 font-mono">Video Editor Timeline</span>
+                            <div class="flex space-x-2 space-x-reverse text-xs text-sky-400">
+                                <i class="fa-solid fa-play"></i>
+                                <span>00:15 / 00:45</span>
+                            </div>
+                        </div>
+                        <!-- Video Preview Screen -->
+                        <div class="bg-slate-900 rounded-xl h-48 flex items-center justify-center relative overflow-hidden mb-4 border border-slate-800">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-sky-900/30 to-purple-900/30"></div>
+                            <span class="font-amiri text-2xl text-white font-bold relative z-10">محتوى مرئي ينبض بالحياة</span>
+                            <div class="absolute bottom-2 right-2 bg-black/60 px-2 py-1 rounded text-[10px] text-slate-300">1080p 60fps</div>
+                        </div>
+                        <!-- Timeline Tracks -->
+                        <div class="space-y-2">
+                            <div class="bg-sky-950/60 border border-sky-500/30 p-2 rounded-lg flex items-center justify-between text-xs text-sky-300">
+                                <span><i class="fa-solid fa-video ml-1"></i> مسار الفيديو الأساسي</span>
+                                <span class="font-mono">00:00 - 00:30</span>
+                            </div>
+                            <div class="bg-purple-950/60 border border-purple-500/30 p-2 rounded-lg flex items-center justify-between text-xs text-purple-300">
+                                <span><i class="fa-solid fa-font ml-1"></i> طبقة النصوص المتحركة</span>
+                                <span class="font-mono">00:05 - 00:20</span>
+                            </div>
+                            <div class="bg-emerald-950/60 border border-emerald-500/30 p-2 rounded-lg flex items-center justify-between text-xs text-emerald-300">
+                                <span><i class="fa-solid fa-music ml-1"></i> المؤثرات الصوتية</span>
+                                <span class="font-mono">00:00 - 00:45</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Modal -->
+    <div id="download-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-slate-700 shadow-2xl relative text-center">
+            <button onclick="closeDownloadModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="w-16 h-16 rounded-2xl gradient-bg mx-auto flex items-center justify-center text-white text-3xl mb-6 shadow-lg shadow-sky-500/30">
+                <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <h3 class="text-2xl font-black mb-2 text-white">تحميل تطبيق جراح</h3>
+            <p class="text-slate-400 text-sm mb-6">متوفر الآن لأجهزة أندرويد وآيفون. حمل التطبيق واستمتع بكافة المميزات مجاناً!</p>
+            
+            <div class="space-y-3">
+                <a href="#download" onclick="triggerDownloadAction('App Store')" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white py-3.5 rounded-xl font-bold transition flex items-center justify-center space-x-3 space-x-reverse">
+                    <i class="fa-brands fa-app-store-ios text-2xl text-sky-400"></i>
+                    <span>App Store (آيفون وأيباد)</span>
+                </a>
+                <a href="#download" onclick="triggerDownloadAction('Google Play')" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white py-3.5 rounded-xl font-bold transition flex items-center justify-center space-x-3 space-x-reverse">
+                    <i class="fa-brands fa-google-play text-2xl text-emerald-400"></i>
+                    <span>Google Play (أندرويد)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 space-x-reverse mb-4">
+                        <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-xl">
+                            <i class="fa-solid fa-pen-nib"></i>
+                        </div>
+                        <span class="text-xl font-black gradient-text">تطبيق جراح</span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-sm leading-relaxed mb-6">
+                        تطبيق عربي رائد في تصميم الصور، الكتابة بالخطوط العربية الفاخرة، تعديل الفيديوهات، وتقنيات الذكاء الاصطناعي الحديثة.
+                    </p>
+                    <div class="flex space-x-4 space-x-reverse text-slate-400">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-sky-400 hover:border-sky-500/50 transition"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-sky-400 hover:border-sky-500/50 transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-sky-400 hover:border-sky-500/50 transition"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-sky-400 hover:border-sky-500/50 transition"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">روابط سريعة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="#hero" class="hover:text-sky-400 transition">الرئيسية</a></li>
+                        <li><a href="#features" class="hover:text-sky-400 transition">المميزات</a></li>
+                        <li><a href="#demo" class="hover:text-sky-400 transition">استوديو التصميم</a></li>
+                        <li><a href="#" onclick="showDownloadModal()" class="hover:text-sky-400 transition">تحميل التطبيق</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-sm">الدعم والمساعدة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-sky-400 transition">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">سياسة الخصوصية</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">شروط الاستخدام</a></li>
+                        <li><a href="#" class="hover:text-sky-400 transition">اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>&copy; 2026 تطبيق جراح (Jarrah App). جميع الحقوق محفوظة.</p>
+                <p class="mt-4 sm:mt-0">تصميم وتطوير بأعلى معايير الإبداع العربي 🌟</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Modal Controls
+        function showDownloadModal() {
+            document.getElementById('download-modal').classList.remove('hidden');
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('download-modal').classList.add('hidden');
+        }
+
+        function triggerDownloadAction(storeName) {
+            closeDownloadModal();
+            showToast(`جارٍ الانتقال إلى ${storeName} لتحميل التطبيق...`);
+        }
+
+        // Demo Studio Tab Switcher
+        function switchTab(tabName) {
+            const textContent = document.getElementById('tab-content-text');
+            const templatesContent = document.getElementById('tab-content-templates');
+            const aiContent = document.getElementById('tab-content-ai');
+
+            const btnText = document.getElementById('tab-btn-text');
+            const btnTemplates = document.getElementById('tab-btn-templates');
+            const btnAi = document.getElementById('tab-btn-ai');
+
+            // Hide all
+            textContent.classList.add('hidden');
+            templatesContent.classList.add('hidden');
+            aiContent.classList.add('hidden');
+
+            // Reset buttons
+            btnText.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white";
+            btnTemplates.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white";
+            btnAi.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition text-slate-400 hover:text-white";
+
+            if (tabName === 'text') {
+                textContent.classList.remove('hidden');
+                btnText.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition bg-sky-600 text-white shadow-md";
+            } else if (tabName === 'templates') {
+                templatesContent.classList.remove('hidden');
+                btnTemplates.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition bg-sky-600 text-white shadow-md";
+            } else if (tabName === 'ai') {
+                aiContent.classList.remove('hidden');
+                btnAi.className = "py-2.5 px-3 rounded-xl font-semibold text-sm transition bg-sky-600 text-white shadow-md";
+            }
+        }
+
+        // Canvas Dynamic Updaters
+        function updateCanvasText() {
+            const inputVal = document.getElementById('canvas-text-input').value;
+            document.getElementById('preview-text-output').textContent = inputVal || 'اكتب شيئاً...';
+        }
+
+        function updateFontFamily() {
+            const selectedFont = document.getElementById('font-family-select').value;
+            const outputEl = document.getElementById('preview-text-output');
+            outputEl.className = `font-bold leading-normal tracking-wide drop-shadow-2xl ${selectedFont}`;
+            // Preserve current font size class or style
+            const currentSize = document.getElementById('font-size-range').value;
+            outputEl.style.fontSize = currentSize + 'px';
+        }
+
+        function updateTextColor() {
+            const colorVal = document.getElementById('text-color-picker').value;
+            document.getElementById('color-hex-label').textContent = colorVal;
+            document.getElementById('preview-text-output').style.color = colorVal;
+        }
+
+        function updateFontSize() {
+            const sizeVal = document.getElementById('font-size-range').value;
+            document.getElementById('font-size-val').textContent = sizeVal;
+            document.getElementById('preview-text-output').style.fontSize = sizeVal + 'px';
+        }
+
+        function setBgTheme(gradientClass) {
+            const canvasBox = document.getElementById('canvas-box');
+            canvasBox.className = `w-full max-w-lg aspect-[4/3] rounded-2xl bg-gradient-to-br ${gradientClass} p-8 flex flex-col items-center justify-center text-center relative shadow-2xl transition-all duration-500 border border-slate-800`;
+            showToast('تم تغيير ثيم الخلفية بنجاح!');
+        }
+
+        function applyTemplate(text, fontClass, colorHex, gradientClass) {
+            document.getElementById('canvas-text-input').value = text;
+            document.getElementById('preview-text-output').textContent = text;
+            
+            document.getElementById('font-family-select').value = fontClass;
+            const outputEl = document.getElementById('preview-text-output');
+            outputEl.className = `font-bold leading-normal tracking-wide drop-shadow-2xl ${fontClass}`;
+            
+            document.getElementById('text-color-picker').value = colorHex;
+            document.getElementById('color-hex-label').textContent = colorHex;
+            outputEl.style.color = colorHex;
+
+            setBgTheme(gradientClass);
+            showToast('تم تطبيق القالب الجاهز بنجاح!');
+        }
+
+        function generateAIImage() {
+            const loadingOverlay = document.getElementById('ai-loading');
+            loadingOverlay.classList.remove('hidden');
+
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+                document.getElementById('preview-text-output').textContent = "✨ تم توليد التصميم بواسطة الذكاء الاصطناعي";
+                showToast('تم توليد التصميم بالذكاء الاصطناعي بنجاح!');
+            }, 2000);
+        }
+
+        function saveDesign() {
+            showToast('تم حفظ التصميم في معرض الصور الخاص بك بنجاح!');
+        }
+
+        function resetDesign() {
+            document.getElementById('canvas-text-input').value = 'تطبيق جراح للإبداع';
+            document.getElementById('preview-text-output').textContent = 'تطبيق جراح للإبداع';
+            document.getElementById('font-family-select').value = 'font-cairo';
+            document.getElementById('text-color-picker').value = '#38bdf8';
+            document.getElementById('color-hex-label').textContent = '#38bdf8';
+            document.getElementById('font-size-range').value = '36';
+            document.getElementById('font-size-val').textContent = '36';
+            document.getElementById('preview-text-output').style.color = '#38bdf8';
+            document.getElementById('preview-text-output').style.fontSize = '36px';
+            setBgTheme('from-slate-900 to-indigo-950');
+            showToast('تم إعادة ضبط استوديو التصميم.');
+        }
+    </script>
+</body>
+</html>
